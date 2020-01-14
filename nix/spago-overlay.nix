@@ -48,13 +48,14 @@ let
 
   hs-pkgs = stackProject {
     src = spago-cleaned-source;
-    ghc = self.buildPackages.pkgs.haskell-nix.compiler.ghc865;
     modules = [
       ({pkgs,...}: {
         # Error with the haddocks in the fail library.
         packages.fail.doHaddock = false;
         # Error with the haddocks in the github library.
         packages.github.doHaddock = false;
+        packages.clock.package.identifier.version = pkgs.lib.mkForce "0.8";
+        packages.clock.sha256 = pkgs.lib.mkForce "sha256:0539w9bjw6xbfv9v6aq9hijszxqdnqhilwpbwpql1400ji95r8q8";
       })
     ];
   };
