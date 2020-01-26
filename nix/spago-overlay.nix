@@ -54,6 +54,10 @@ let
         packages.fail.doHaddock = false;
         # Error with the haddocks in the github library.
         packages.github.doHaddock = false;
+
+        # Older versions of clock can't be cross compiled:
+        # https://github.com/corsis/clock/issues/48
+        # TODO: Probably should just bump this in stack.yaml.
         packages.clock.package.identifier.version = pkgs.lib.mkForce "0.8";
         packages.clock.sha256 = pkgs.lib.mkForce "sha256:0539w9bjw6xbfv9v6aq9hijszxqdnqhilwpbwpql1400ji95r8q8";
       })
