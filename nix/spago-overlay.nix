@@ -49,7 +49,7 @@ let
   hs-pkgs = stackProject {
     src = spago-cleaned-source;
     modules = [
-      ({pkgs,...}: {
+      ({pkgs,config,...}: {
         # Error with the haddocks in the fail library.
         packages.fail.doHaddock = false;
         # Error with the haddocks in the github library.
@@ -60,6 +60,29 @@ let
         # TODO: Probably should just bump this in stack.yaml.
         packages.clock.package.identifier.version = pkgs.lib.mkForce "0.8";
         packages.clock.sha256 = pkgs.lib.mkForce "sha256:0539w9bjw6xbfv9v6aq9hijszxqdnqhilwpbwpql1400ji95r8q8";
+
+        # TODO: https://github.com/jacobstanley/unix-compat/pull/43
+        packages.unix-compat.package.identifier.version = pkgs.lib.mkForce "0.5.2";
+        packages.unix-compat.sha256 = pkgs.lib.mkForce "sha256:1a8brv9fax76b1fymslzyghwa6ma8yijiyyhn12msl3i5x24x6k5";
+
+
+        # Disable haddocks to save time.
+        doHaddock = false;
+
+        packages.spago.components.library.configureFlags = [
+          "--verbose"
+          "--ghc-option=-v"
+          "--ghc-option=-j1"
+          "--ld-option=-Wl,--start-group --ld-option=-Wl,-lstdc++"
+          # "--ghc-option=-L/nix/store/h3k8c62sxdn5zprfv927gf5vy0w4kcns-x86_64-unknown-linux-musl-stage-final-gcc-debug-9.2.0/lib/gcc/x86_64-unknown-linux-musl/9.2.0/../../../../x86_64-unknown-linux-musl/lib/../lib64"
+          "--ghc-option=-lstdc++"
+          "--ghc-option=-lgcc_s"
+          "--ghc-option=-L${pkgs.libcxx}/lib"
+          "--ghc-option=-optl-lstdc++"
+
+        ];
+
+        enableShared = false;
       })
     ];
   };
