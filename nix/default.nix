@@ -17,6 +17,6 @@ let
   };
 in
 
-# nixpkgs.hs-pkgs.spago.components.library
+nixpkgs.pkgsStatic.hs-pkgs.spago.components.exes.spago
 
-nixpkgs
+# nixpkgs
